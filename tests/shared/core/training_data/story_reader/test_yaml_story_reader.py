@@ -155,6 +155,21 @@ async def test_yaml_wrong_yaml_format_warning(default_domain: Domain):
         )
 
 
+async def test_yaml_slot_with_list(default_domain: Domain):
+    yaml_file = "data/test_yaml_stories/story_slot_with_list.yml"
+
+    with pytest.warns(None):
+        tracker = await training.load_data(
+            yaml_file,
+            default_domain,
+            use_story_concatenation=False,
+            tracker_limit=1000,
+            remove_duplicates=False,
+        )
+
+    assert tracker[0].events[3] == SlotSet("name", ["value"])
+
+
 async def test_read_rules_with_stories(default_domain: Domain):
 
     yaml_file = "data/test_yaml_stories/stories_and_rules.yml"
